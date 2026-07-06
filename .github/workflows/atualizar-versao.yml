@@ -1,0 +1,58 @@
+name: Atualizar versao
+
+# Dispara a cada push na branch main
+on:
+  push:
+    branches: [ main ]
+
+# Permite que o workflow faça commit/push de volta no repositório
+permissions:
+  contents: write
+
+# Garante que apenas uma execução rode por vez (evita conflitos de push)
+concurrency:
+  group: atualizar-versao
+  cancel-in-progress: false
+
+jobs:
+  bump-versao:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Baixa o repositório
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      # 2. Incrementa a chave "versao" em configs/configuracoes.json
+      - name: Incrementar versao
+        run: |
+          python - <<'EOF'
+          import json
+
+          caminho = "configs/configuracoes.json"
+
+          with open(caminho, "r", encoding="utf-8") as f:
+              dados = json.load(f)
+
+          dados[0]["versao"] += 1
+          nova_versao = dados[0]["versao"]
+
+          with open(caminho, "w", encoding="utf-8") as f:
+              json.dump(dados, f, indent=4, ensure_ascii=False)
+              f.write("\n")
+
+          print(f"Nova versao: {nova_versao}")
+          EOF
+
+      # 3. Faz commit e push da alteração (se houver mudança)
+      - name: Commit e push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet configs/configuracoes.json; then
+            echo "Nenhuma alteracao na versao."
+          else
+            git add configs/configuracoes.json
+            git commit -m "chore: atualiza versao automaticamente [skip ci]"
+            git push
+          fi
