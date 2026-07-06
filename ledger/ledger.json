@@ -272,5 +272,33 @@
             }
         ],
         "hash_final": "0000816465b9840b92b65a80b10c54c528f907b1eb33fe9c7881fd1ca0bc686e"
+    },
+    {
+        "versao": 15453,
+        "dificuldade": 4,
+        "target": 4294967295,
+        "nonce": 23531,
+        "timestamp": 1783365934,
+        "hash_bloco_anterior": "0000816465b9840b92b65a80b10c54c528f907b1eb33fe9c7881fd1ca0bc686e",
+        "hash_raiz_merkle": "896eefc351e20382475d78d439b537ae36eeb230c3ffb3115d3c070122176a13",
+        "transacoes": [
+            {
+                "de": "Renan",
+                "para": "Rizzo",
+                "valor": 70.0
+            },
+            {
+                "de": "rede",
+                "para": "igor_precision",
+                "valor": 25.0
+            },
+            {
+                "voltas_nonce": 0
+            },
+            {
+                "minerador": "igor_precision"
+            }
+        ],
+        "hash_final": "000090058b0af51a218b8a52efe79dc45fec825d832f3700ebdf5e31469bd15a"
     }
 ]
