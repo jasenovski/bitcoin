@@ -1,0 +1,220 @@
+[
+    {
+        "versao": 15452,
+        "dificuldade": 3,
+        "target": 4294967295,
+        "nonce": 1949,
+        "timestamp": 1686921823,
+        "hash_bloco_anterior": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+        "hash_raiz_merkle": "eb8eb034114f80913f5f5c73cf1054de47a6de75fdee37ecfeb34c08c8f24762",
+        "transacoes": [
+            {
+                "de": "Dolar",
+                "para": "Bitcoin",
+                "valor": 1000.0
+            }
+        ],
+        "hash_final": "000ba9cb3f8516b38fd3543aff49c0ae272ce7518c15f552ae39399dfa18efeb"
+    },
+    {
+        "versao": 15452,
+        "dificuldade": 3,
+        "target": 4294967295,
+        "nonce": 6264,
+        "timestamp": 1730432356,
+        "hash_bloco_anterior": "000ba9cb3f8516b38fd3543aff49c0ae272ce7518c15f552ae39399dfa18efeb",
+        "hash_raiz_merkle": "48c8650de6ca63421d0e5c7daa63d147bfd97d68e924c1dcf28068ca6d158083",
+        "transacoes": [
+            {
+                "de": "igor",
+                "para": "vera",
+                "valor": 100.0
+            },
+            {
+                "de": "rede",
+                "para": "Book-Igor",
+                "valor": 50.0
+            },
+            {
+                "voltas_nonce": 0
+            },
+            {
+                "minerador": "Book-Igor"
+            }
+        ],
+        "hash_final": "000c2e316598a36194f2f35ff4182b600e6fa2325b94258e0442b42dae4a3616"
+    },
+    {
+        "versao": 15452,
+        "dificuldade": 3,
+        "target": 4294967295,
+        "nonce": 160,
+        "timestamp": 1732105949,
+        "hash_bloco_anterior": "000c2e316598a36194f2f35ff4182b600e6fa2325b94258e0442b42dae4a3616",
+        "hash_raiz_merkle": "d6638de40600554ec87d99a390bb52d394e16d14723b417b3d4e2b291c73ee58",
+        "transacoes": [
+            {
+                "de": "ijasenovski",
+                "para": "joao",
+                "valor": 75.0
+            },
+            {
+                "de": "rede",
+                "para": "igor_precision",
+                "valor": 50.0
+            },
+            {
+                "voltas_nonce": 0
+            },
+            {
+                "minerador": "igor_precision"
+            }
+        ],
+        "hash_final": "000585053081a46f4f6b8d971345b7b1cc63dc9d75ec06e3b2e7ad013b5cacbb"
+    },
+    {
+        "versao": 15453,
+        "dificuldade": 4,
+        "target": 4294967295,
+        "nonce": 6008,
+        "timestamp": 1732106131,
+        "hash_bloco_anterior": "000585053081a46f4f6b8d971345b7b1cc63dc9d75ec06e3b2e7ad013b5cacbb",
+        "hash_raiz_merkle": "cca7995ddf56555602435cba19327725384465f6a114e19ae8a1718746cc103c",
+        "transacoes": [
+            {
+                "de": "jsmith",
+                "para": "carlos",
+                "valor": 110.0
+            },
+            {
+                "de": "rede",
+                "para": "igor_precision",
+                "valor": 25.0
+            },
+            {
+                "voltas_nonce": 0
+            },
+            {
+                "minerador": "igor_precision"
+            }
+        ],
+        "hash_final": "00001d6db030d905ace6fc4b1d933e577e291f32ed93a773f93a778f6d8fcbd0"
+    },
+    {
+        "versao": 15453,
+        "dificuldade": 4,
+        "target": 4294967295,
+        "nonce": 102371,
+        "timestamp": 1732107833,
+        "hash_bloco_anterior": "00001d6db030d905ace6fc4b1d933e577e291f32ed93a773f93a778f6d8fcbd0",
+        "hash_raiz_merkle": "a9ba04ea0155848e785fa53e4c7d12e0b26c7662ae1f49eeff8bddc50483043a",
+        "transacoes": [
+            {
+                "de": "charles",
+                "para": "marlene",
+                "valor": 52.0
+            },
+            {
+                "de": "vivo",
+                "para": "tim",
+                "valor": 80.0
+            },
+            {
+                "de": "rede",
+                "para": "Book-Igor",
+                "valor": 25.0
+            },
+            {
+                "voltas_nonce": 0
+            },
+            {
+                "minerador": "Book-Igor"
+            }
+        ],
+        "hash_final": "000066381fffaee143f3e132979d5aa07af2024fc1c0fe6e545cc6fde6402116"
+    },
+    {
+        "versao": 15453,
+        "dificuldade": 4,
+        "target": 4294967295,
+        "nonce": 18731,
+        "timestamp": 1732108807,
+        "hash_bloco_anterior": "000066381fffaee143f3e132979d5aa07af2024fc1c0fe6e545cc6fde6402116",
+        "hash_raiz_merkle": "727ea3d9d19b635acf369b9f11c6e203332b017f2349928758c2867e4fc1c1af",
+        "transacoes": [
+            {
+                "de": "jose",
+                "para": "carla",
+                "valor": 57.0
+            },
+            {
+                "de": "rede",
+                "para": "Book-Igor",
+                "valor": 25.0
+            },
+            {
+                "voltas_nonce": 0
+            },
+            {
+                "minerador": "Book-Igor"
+            }
+        ],
+        "hash_final": "0000d4e4799171833268ffdfab9e0d18eff792ae6f40407d262b745d98fdad91"
+    },
+    {
+        "versao": 15453,
+        "dificuldade": 4,
+        "target": 4294967295,
+        "nonce": 1654,
+        "timestamp": 1783342300,
+        "hash_bloco_anterior": "0000d4e4799171833268ffdfab9e0d18eff792ae6f40407d262b745d98fdad91",
+        "hash_raiz_merkle": "ed4f6c53ccca98d79e93d9517b8f481b542a3817f0c6684b4ec70de5ead0aecb",
+        "transacoes": [
+            {
+                "de": "Paulo",
+                "para": "Paula",
+                "valor": 65.0
+            },
+            {
+                "de": "rede",
+                "para": "MacBook-Pro-de-Igor.local",
+                "valor": 25.0
+            },
+            {
+                "voltas_nonce": 0
+            },
+            {
+                "minerador": "MacBook-Pro-de-Igor.local"
+            }
+        ],
+        "hash_final": "000097043186ca49ded41c5f9e3346289ee0c4bdefc94fffc00da35120d11d18"
+    },
+    {
+        "versao": 15453,
+        "dificuldade": 4,
+        "target": 4294967295,
+        "nonce": 34423,
+        "timestamp": 1783356794,
+        "hash_bloco_anterior": "000097043186ca49ded41c5f9e3346289ee0c4bdefc94fffc00da35120d11d18",
+        "hash_raiz_merkle": "f29bb9040addfbf647bbda6caf05831cd8265fd0a9704167d0e385bd27bebd41",
+        "transacoes": [
+            {
+                "de": "ijasenovski",
+                "para": "karla",
+                "valor": 50.0
+            },
+            {
+                "de": "rede",
+                "para": "MacBook-Pro-de-Igor.local",
+                "valor": 25.0
+            },
+            {
+                "voltas_nonce": 0
+            },
+            {
+                "minerador": "MacBook-Pro-de-Igor.local"
+            }
+        ],
+        "hash_final": "00007194ee0a438cf53f85d8c461f9a7fc10ba2ba6800f54c81ac33ad544f3e5"
+    }
+]

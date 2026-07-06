@@ -1,0 +1,7 @@
+.vscode
+venv_cbp
+*.bat
+*.ipynb
+*.pkl
+__pycache__
+transacoes_mineradas

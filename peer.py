@@ -1,0 +1,61 @@
+import requests
+from models.minerar import minerar
+from platform import node
+from socket import gethostbyname, gethostname
+
+try:
+    localhost = gethostbyname(gethostname())
+except:
+    localhost = ""
+
+ip_peer = input(f"Digite o IP do peer [{localhost}]: ")
+if ip_peer == "":
+    ip_peer = localhost
+
+port_peer = input("Digite a porta do peer [5000]: ")
+if port_peer == "":
+    port_peer = 5000
+
+PEER = f"http://{ip_peer}:{port_peer}"
+MINERADOR = node()
+
+configs: dict = requests.get(f"{PEER}/get_configs").json()[0]
+transacoes: list[dict] = requests.get(f"{PEER}/get_transacoes").json()
+ultimo_bloco: dict = requests.get(f"{PEER}/get_ledger").json()[-1]
+
+if not transacoes[0].get("code", None) is None:
+    print("Não há transações para minerar")
+    exit()
+else:
+    transacoes.append({"de": "rede", "para": MINERADOR, "valor": float(configs["recompensa"])})
+    transacoes.append({"voltas_nonce": 0})
+    transacoes.append({"minerador": MINERADOR})
+
+
+versao = configs["versao"]
+hash_bloco_anterior = ultimo_bloco["hash_final"]
+target = configs["target"]
+dificuldade = configs["dificuldade"]
+
+sha2, header = minerar(versao, hash_bloco_anterior, transacoes, target, dificuldade)
+
+nonce = int(header[32 + 256 + 256 + 32 + 32:32 + 256 + 256 + 32 + 32 + 32], 2)
+timestamp = int(header[32 + 256 + 256:32 + 256 + 256 + 32], 2)
+merkle_root = f"{int(header[32 + 256:32 + 256 + 256], 2):064x}"
+
+bloco = \
+{
+    "versao": versao,
+    "dificuldade": dificuldade,
+    "target": target,
+    "nonce": nonce,
+    "timestamp": timestamp,
+    "hash_bloco_anterior": hash_bloco_anterior,
+    "hash_raiz_merkle": merkle_root,
+    "hash_final": sha2,
+    "transacoes": transacoes,
+}
+
+response = requests.put(f"{PEER}/check_mining", json=bloco)
+
+print(response.json())
