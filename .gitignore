@@ -3,5 +3,6 @@ venv_cbp
 *.bat
 *.ipynb
 *.pkl
+*.ps1
 __pycache__
 transacoes_mineradas
