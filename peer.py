@@ -2,6 +2,9 @@ import requests
 from models.minerar import minerar
 from platform import node
 from socket import gethostbyname, gethostname
+from datetime import datetime
+
+start_time = datetime.now()
 
 try:
     localhost = gethostbyname(gethostname())
@@ -37,7 +40,7 @@ hash_bloco_anterior = ultimo_bloco["hash_final"]
 target = configs["target"]
 dificuldade = configs["dificuldade"]
 
-sha2, header = minerar(versao, hash_bloco_anterior, transacoes, target, dificuldade)
+sha2, header = minerar(PEER, versao, hash_bloco_anterior, transacoes, target, dificuldade)
 
 nonce = int(header[32 + 256 + 256 + 32 + 32:32 + 256 + 256 + 32 + 32 + 32], 2)
 timestamp = int(header[32 + 256 + 256:32 + 256 + 256 + 32], 2)
@@ -55,6 +58,9 @@ bloco = \
     "hash_final": sha2,
     "transacoes": transacoes,
 }
+
+mining_time = datetime.now() - datetime.fromtimestamp(bloco["timestamp"])
+print(f"Tempo de mineração: {mining_time.total_seconds() / 60:.2f} minutos")
 
 response = requests.put(f"{PEER}/check_mining", json=bloco)
 

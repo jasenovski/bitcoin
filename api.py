@@ -48,10 +48,10 @@ class GetTransacoes(Resource):
 
 class CheckMinerar(Resource):
     def put(self):
-        args = block_put_args.parse_args()
-        if checagem(bloco=args):
-            mover_transacoes(args["transacoes"])
-            escrever_bloco(args)
+        bloco = block_put_args.parse_args()
+        if checagem(bloco=bloco):
+            mover_transacoes(bloco["transacoes"])
+            escrever_bloco(bloco)
             return {"message": "OK", "code": 200}
         else:
             return {"message": "NOK", "code": 400}

@@ -2,8 +2,11 @@ from datetime import datetime
 from utils.merkle import gerar_raiz_merkle
 from models.sha_bitcoin import sha_256_btc
 from utils.constants import padding1, padding2
+import requests
 
-def minerar(versao: int, 
+def minerar(
+            PEER: str,
+            versao: int, 
             hash_bloco_anterior: str, 
             transacoes: list[dict], 
             target: int, 
@@ -13,6 +16,7 @@ def minerar(versao: int,
     Função que realiza a mineração de um bloco.
 
     Args:
+        PEER (str): Endereço do peer para verificar o ledger.
         versao (int): Versão do bloco.
         hash_bloco_anterior (str): Hash hexadecimal do bloco anterior.
         transacoes (list[dict]): Lista de transações a serem incluídas no bloco.
@@ -35,7 +39,15 @@ def minerar(versao: int,
     flag = False
 
     while True:
-        for nonce in range(2 ** 32 - 1):
+        for i, nonce in enumerate(range(2 ** 32 - 1)):
+
+            if i % 1_000 == 0:
+                ledger: list[dict] = requests.get(f"{PEER}/get_ledger").json()
+                ultimas_transacoes = ledger[-1]["transacoes"]
+                if ultimas_transacoes[:-3] == transacoes[:-3]:
+                    print("Transações já foram mineradas por outro peer")
+                    exit()
+
             nonce_bin = f"{nonce:032b}"
             timestamp = f"{int(datetime.now().timestamp()):032b}"
             header1 = versao + hash_bloco_anterior + hash_raiz_merkle_bin + timestamp + target + nonce_bin + padding1
