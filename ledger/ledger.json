@@ -356,5 +356,33 @@
             }
         ],
         "hash_final": "0000f6ebbe54eeab7cb8ebbb827e4150567c951b93248212c9a191844b2dd14c"
+    },
+    {
+        "versao": 15453,
+        "dificuldade": 4,
+        "target": 4294967295,
+        "nonce": 87271,
+        "timestamp": 1783370402,
+        "hash_bloco_anterior": "0000f6ebbe54eeab7cb8ebbb827e4150567c951b93248212c9a191844b2dd14c",
+        "hash_raiz_merkle": "94e00e1e52dc70d9d0d314407c76bf0060494ecd475be6e62dfaadbec0bc57f5",
+        "transacoes": [
+            {
+                "de": "Carlos",
+                "para": "Marlene",
+                "valor": 700.0
+            },
+            {
+                "de": "rede",
+                "para": "MacBook-Pro-de-Igor.local",
+                "valor": 25.0
+            },
+            {
+                "voltas_nonce": 0
+            },
+            {
+                "minerador": "MacBook-Pro-de-Igor.local"
+            }
+        ],
+        "hash_final": "00006596dc27c564770dc734ea4c5c15757b75b4dabbee9c48cbe8fff04b73b1"
     }
 ]
