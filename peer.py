@@ -3,7 +3,18 @@ from models.minerar import minerar
 from platform import node
 from socket import gethostbyname, gethostname
 from datetime import datetime
-from json import load
+from json import load, dump
+
+def check_ledger_exists():
+    try:
+        with open('ledger/ledger.json') as json_file:
+            ledger = load(json_file)
+    except FileNotFoundError:
+        ledger = requests.get(f"{PEER}/get_ledger").json()
+        with open("ledger/ledger.json", "w") as file:
+            dump(ledger, file, indent=4)
+
+check_ledger_exists()
 
 start_time = datetime.now()
 
