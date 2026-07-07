@@ -74,3 +74,5 @@ print(f"Tempo de mineração: {mining_time.total_seconds() / 60:.2f} minutos")
 response = requests.put(f"{PEER}/check_mining", json=bloco)
 
 print(response.json())
+
+print("teste")
