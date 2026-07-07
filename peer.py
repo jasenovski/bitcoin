@@ -3,6 +3,7 @@ from models.minerar import minerar
 from platform import node
 from socket import gethostbyname, gethostname
 from datetime import datetime
+from json import load
 
 start_time = datetime.now()
 
@@ -25,6 +26,14 @@ MINERADOR = node()
 configs: dict = requests.get(f"{PEER}/get_configs").json()[0]
 transacoes: list[dict] = requests.get(f"{PEER}/get_transacoes").json()
 ultimo_bloco: dict = requests.get(f"{PEER}/get_ledger").json()[-1]
+
+with open('configs/configuracoes.json') as json_file:
+    versao_atual = load(json_file)[0]["versao"]
+
+if versao_atual != configs["versao"]:
+    print(f"Versão do peer diferente da versão local. Versão do peer: {configs['versao']} | Versão local: {versao_atual}")
+    print("Atualize a versão local para continuar minerando usando 'git pull'")
+    exit()
 
 if not transacoes[0].get("code", None) is None:
     print("Não há transações para minerar")
