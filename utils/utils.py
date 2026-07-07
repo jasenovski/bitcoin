@@ -132,6 +132,8 @@ def escrever_bloco(bloco: dict) -> None:
 
     with open("ledger/ledger.json", "w") as file:
         jdump(ledger, file, indent=4)
+    
+    return ledger
 
 def mover_transacoes(transacoes_checar: list[dict]) -> None:
 

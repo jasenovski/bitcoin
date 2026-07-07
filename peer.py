@@ -14,8 +14,6 @@ def check_ledger_exists():
         with open("ledger/ledger.json", "w") as file:
             dump(ledger, file, indent=4)
 
-check_ledger_exists()
-
 start_time = datetime.now()
 
 try:
@@ -33,6 +31,8 @@ if port_peer == "":
 
 PEER = f"http://{ip_peer}:{port_peer}"
 MINERADOR = node()
+
+check_ledger_exists()
 
 configs: dict = requests.get(f"{PEER}/get_configs").json()[0]
 transacoes: list[dict] = requests.get(f"{PEER}/get_transacoes").json()
@@ -88,4 +88,11 @@ print(response.json())
 
 if response.json()["code"] == 200:
     from utils.utils import escrever_bloco
-    escrever_bloco(bloco)
+    ledger = escrever_bloco(bloco)
+    
+    response = \
+        requests.post(url=f"{PEER}/receber_ledger", 
+                      json={"minerador": f"{MINERADOR}", 
+                            "ledger": ledger})
+    print("-" * 100)
+    print(response.json())
