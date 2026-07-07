@@ -23,36 +23,58 @@ jobs:
       - name: Checkout do código
         uses: actions/checkout@v4
 
-      # 2. Incrementa a chave "versao" em configs/configuracoes.json
-      - name: Incrementar versao
+      # 2. Le o ultimo arquivo de configuracao e gera um novo arquivo
+      - name: Gerar nova configuracao
         run: |
           python - <<'EOF'
           import json
+          import os
+          from glob import glob
+          from copy import deepcopy
 
-          caminho = "configs/configuracoes.json"
+          pasta = "configs"
+          arquivos = glob(os.path.join(pasta, "configuracoes*.json"))
+          if not arquivos:
+              raise SystemExit("Nenhum arquivo de configuracao encontrado.")
 
-          with open(caminho, "r", encoding="utf-8") as f:
+          def carregar_versao(caminho):
+              with open(caminho, "r", encoding="utf-8") as f:
+                  dados = json.load(f)
+              config = dados[-1] if isinstance(dados, list) else dados
+              return config["versao"]
+
+          # Seleciona o ultimo arquivo (o de maior versao)
+          ultimo_arquivo = max(arquivos, key=carregar_versao)
+
+          with open(ultimo_arquivo, "r", encoding="utf-8") as f:
               dados = json.load(f)
 
-          dados[0]["versao"] += 1
-          nova_versao = dados[0]["versao"]
+          # Usa a ultima configuracao como base e incrementa a versao
+          base = dados[-1] if isinstance(dados, list) else dados
+          nova_config = deepcopy(base)
+          nova_config["versao"] += 1
+          nova_versao = nova_config["versao"]
 
-          with open(caminho, "w", encoding="utf-8") as f:
-              json.dump(dados, f, indent=4, ensure_ascii=False)
+          # Mantem o mesmo formato do arquivo de origem (lista ou objeto)
+          conteudo = [nova_config] if isinstance(dados, list) else nova_config
+
+          novo_caminho = os.path.join(pasta, f"configuracoes_{nova_versao}.json")
+          with open(novo_caminho, "w", encoding="utf-8") as f:
+              json.dump(conteudo, f, indent=4, ensure_ascii=False)
               f.write("\n")
 
-          print(f"Nova versao: {nova_versao}")
+          print(f"Base: {ultimo_arquivo} | Novo arquivo: {novo_caminho} | versao {nova_versao}")
           EOF
 
-      # 3. Faz commit e push da alteração (se houver mudança)
+      # 3. Faz commit e push do novo arquivo (se houver mudança)
       - name: Commit e push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          if git diff --quiet configs/configuracoes.json; then
-            echo "Nenhuma alteracao na versao."
+          git add configs/
+          if git diff --cached --quiet; then
+            echo "Nenhuma alteracao na configuracao."
           else
-            git add configs/configuracoes.json
-            git commit -m "chore: atualiza versao automaticamente [skip ci]"
+            git commit -m "chore: gera nova configuracao automaticamente [skip ci]"
             git push
           fi
