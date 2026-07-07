@@ -9,10 +9,12 @@ def check_ledger_exists():
     try:
         with open('ledger/ledger.json') as json_file:
             ledger = load(json_file)
+        print("Ledger local encontrado.")
     except FileNotFoundError:
-        ledger = requests.get(f"{PEER}/get_ledger").json()
+        print("Ledger não encontrado...")
         with open("ledger/ledger.json", "w") as file:
-            dump(ledger, file, indent=4)
+            dump(ledger_peer, file, indent=4)
+        print("Ledger obtido e salvo localmente.")
 
 start_time = datetime.now()
 
@@ -32,11 +34,12 @@ if port_peer == "":
 PEER = f"http://{ip_peer}:{port_peer}"
 MINERADOR = node()
 
-check_ledger_exists()
-
 configs: dict = requests.get(f"{PEER}/get_configs").json()[0]
 transacoes: list[dict] = requests.get(f"{PEER}/get_transacoes").json()
-ultimo_bloco: dict = requests.get(f"{PEER}/get_ledger").json()[-1]
+ledger_peer: list[dict] = requests.get(f"{PEER}/get_ledger").json()
+ultimo_bloco: dict = ledger_peer[-1]
+
+check_ledger_exists()
 
 with open('configs/configuracoes.json') as json_file:
     versao_atual = load(json_file)[0]["versao"]
