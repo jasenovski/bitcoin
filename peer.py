@@ -74,3 +74,7 @@ print(f"Tempo de mineração: {mining_time.total_seconds() / 60:.2f} minutos")
 response = requests.put(f"{PEER}/check_mining", json=bloco)
 
 print(response.json())
+
+if response.json()["code"] == 200:
+    from utils.utils import escrever_bloco
+    escrever_bloco(bloco)

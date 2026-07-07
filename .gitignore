@@ -7,3 +7,4 @@ venv_cbp
 __pycache__
 transacoes_mineradas
 ledger/
+api.py
