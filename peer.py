@@ -13,8 +13,10 @@ def check_ledger_exists():
     except FileNotFoundError:
         print("Ledger não encontrado...")
         with open("ledger/ledger.json", "w") as file:
-            dump(ledger_peer, file, indent=4)
+            dump(ledger, file, indent=4)
         print("Ledger obtido e salvo localmente.")
+    
+    return ledger
 
 start_time = datetime.now()
 
@@ -36,8 +38,8 @@ MINERADOR = node()
 
 configs: dict = requests.get(f"{PEER}/get_configs").json()[0]
 transacoes: list[dict] = requests.get(f"{PEER}/get_transacoes").json()
-ledger_peer: list[dict] = requests.get(f"{PEER}/get_ledger").json()
-ultimo_bloco: dict = ledger_peer[-1]
+ledger: list[dict] = requests.get(f"{PEER}/get_ledger").json()
+ultimo_bloco: dict = ledger[-1]
 
 check_ledger_exists()
 
@@ -82,7 +84,7 @@ bloco = \
     "transacoes": transacoes,
 }
 
-mining_time = start_time - datetime.fromtimestamp(bloco["timestamp"])
+mining_time = datetime.fromtimestamp(bloco["timestamp"]) - start_time
 print(f"Tempo de mineração: {mining_time.total_seconds() / 60:.2f} minutos")
 
 response = requests.put(f"{PEER}/check_mining", json=bloco)
@@ -91,7 +93,7 @@ print(response.json())
 
 if response.json()["code"] == 200:
     from utils.utils import escrever_bloco
-    ledger = escrever_bloco(bloco)
+    ledger = escrever_bloco(bloco, ledger)
     
     response = \
         requests.post(url=f"{PEER}/receber_ledger", 

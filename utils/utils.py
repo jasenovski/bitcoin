@@ -104,29 +104,15 @@ def checagem(bloco: dict) -> bool:
 
     return checagem_hash and checagem_merkle and checagem_transacoes
 
-def escrever_bloco(bloco: dict) -> None:
+def escrever_bloco(bloco: dict, ledger: list[dict]) -> None:
 
     """
     Função que escreve o bloco no ledger.
 
     Args:
         bloco (dict): Dicionário contendo as informações do bloco.
+        ledger (list): Lista de blocos do ledger.
     """
-
-    with open("ledger/ledger.json", "r") as file:
-        ledger: list[dict] = jload(file)
-
-    bloco = {
-        "versao": bloco["versao"],
-        "dificuldade": bloco["dificuldade"],
-        "target": bloco["target"],
-        "nonce": bloco["nonce"],
-        "timestamp": bloco["timestamp"],
-        "hash_bloco_anterior": bloco["hash_bloco_anterior"],
-        "hash_raiz_merkle": bloco["hash_raiz_merkle"],
-        "transacoes": bloco["transacoes"],
-        "hash_final": bloco["hash_final"]
-    }
 
     ledger.append(bloco)
 
