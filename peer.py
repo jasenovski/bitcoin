@@ -82,7 +82,7 @@ bloco = \
     "transacoes": transacoes,
 }
 
-mining_time = datetime.now() - datetime.fromtimestamp(bloco["timestamp"])
+mining_time = start_time - datetime.fromtimestamp(bloco["timestamp"])
 print(f"Tempo de mineração: {mining_time.total_seconds() / 60:.2f} minutos")
 
 response = requests.put(f"{PEER}/check_mining", json=bloco)
