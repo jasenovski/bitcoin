@@ -16,7 +16,30 @@ def check_ledger_exists():
             dump(ledger, file, indent=4)
         print("Ledger obtido e salvo localmente.")
     
-    return ledger
+def check_configs():
+    try:
+        with open('configs/configuracoes.json') as json_file:
+            configs_local = load(json_file)
+
+        print("Configurações locais encontradas.")
+
+        if configs_local[0]["versao"] != configs["versao"]:
+            import os
+            print(f"Executando 'git pull' para atualizar a versão local do peer. "
+                  f"Versão do peer: {configs['versao']} | Versão local: {configs_local[0]['versao']}")
+            os.system("git pull")
+
+            with open("configs/configuracoes.json", "w") as file:
+                dump(configs, file, indent=4)
+            
+            print("Versão atualizada. Por favor, reinicie o minerador para continuar.")
+            exit()
+
+    except FileNotFoundError:
+        print("Configurações não encontradas...")
+        with open("configs/configuracoes.json", "w") as file:
+            dump(configs, file, indent=4)
+        print("Configurações obtidas e salvas localmente.")
 
 start_time = datetime.now()
 
@@ -42,14 +65,15 @@ ledger: list[dict] = requests.get(f"{PEER}/get_ledger").json()
 ultimo_bloco: dict = ledger[-1]
 
 check_ledger_exists()
+check_configs()
 
-with open('configs/configuracoes.json') as json_file:
-    versao_atual = load(json_file)[0]["versao"]
+# with open('configs/configuracoes.json') as json_file:
+#     versao_atual = load(json_file)[0]["versao"]
 
-if versao_atual != configs["versao"]:
-    print(f"Versão do peer diferente da versão local. Versão do peer: {configs['versao']} | Versão local: {versao_atual}")
-    print("Atualize a versão local para continuar minerando usando 'git pull'")
-    exit()
+# if versao_atual != configs["versao"]:
+#     print(f"Versão do peer diferente da versão local. Versão do peer: {configs['versao']} | Versão local: {versao_atual}")
+#     print("Atualize a versão local para continuar minerando usando 'git pull'")
+#     exit()
 
 if not transacoes[0].get("code", None) is None:
     print("Não há transações para minerar")
