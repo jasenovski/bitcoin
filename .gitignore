@@ -8,3 +8,5 @@ __pycache__
 transacoes_mineradas
 ledger/ledger.json
 api.py
+main.py
+pgs/
