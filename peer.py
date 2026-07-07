@@ -18,7 +18,19 @@ def check_ledger_exists():
     
 def check_configs():
     try:
-        with open('configs/configuracoes.json') as json_file:
+        from glob import glob
+        arquivos_configs = glob("configs/configuracoes*.json")
+        if not arquivos_configs:
+            raise FileNotFoundError("Nenhum arquivo de configuração encontrado.")
+
+        def versao_do_arquivo(caminho):
+            with open(caminho, encoding="utf-8") as json_file:
+                dados = load(json_file)
+            config = dados[-1] if isinstance(dados, list) else dados
+            return config["versao"]
+
+        ultimo_arquivo = max(arquivos_configs, key=versao_do_arquivo)
+        with open(ultimo_arquivo, encoding="utf-8") as json_file:
             configs_local = load(json_file)
 
         print("Configurações locais encontradas.")
@@ -66,14 +78,6 @@ ultimo_bloco: dict = ledger[-1]
 
 check_ledger_exists()
 check_configs()
-
-# with open('configs/configuracoes.json') as json_file:
-#     versao_atual = load(json_file)[0]["versao"]
-
-# if versao_atual != configs["versao"]:
-#     print(f"Versão do peer diferente da versão local. Versão do peer: {configs['versao']} | Versão local: {versao_atual}")
-#     print("Atualize a versão local para continuar minerando usando 'git pull'")
-#     exit()
 
 if not transacoes[0].get("code", None) is None:
     print("Não há transações para minerar")
