@@ -6,6 +6,7 @@ venv_cbp
 *.ps1
 __pycache__
 transacoes_mineradas
+transacoes_minerar
 ledger/ledger.json
 ledgers/
 api.py
