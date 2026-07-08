@@ -6,18 +6,18 @@ from datetime import datetime
 from json import load, dump
 from glob import glob
 
-def check_ledger_exists():
+def check_ledger_exists(ledger: list[dict]):
     try:
-        with open('ledger/ledger.json') as json_file:
+        with open('ledger/ledger.json', 'r', encoding='utf-8') as json_file:
             ledger = load(json_file)
         print("Ledger local encontrado.")
     except FileNotFoundError:
         print("Ledger não encontrado...")
-        with open("ledger/ledger.json", "w") as file:
+        with open("ledger/ledger.json", "w", encoding='utf-8') as file:
             dump(ledger, file, indent=4)
         print("Ledger obtido e salvo localmente.")
     
-def check_configs():
+def check_configs(configs: dict):
     try:
         arquivos_configs = glob("configs/configuracoes*.json")
         if not arquivos_configs:
@@ -41,7 +41,7 @@ def check_configs():
                   f"Versão do peer: {configs['versao']} | Versão local: {configs_local[0]['versao']}")
             os.system("git pull")
 
-            with open("configs/configuracoes.json", "w") as file:
+            with open("configs/configuracoes.json", "w", encoding='utf-8') as file:
                 dump(configs, file, indent=4)
             
             print("Versão atualizada. Por favor, reinicie o minerador para continuar.")
@@ -49,7 +49,7 @@ def check_configs():
 
     except FileNotFoundError:
         print("Configurações não encontradas...")
-        with open("configs/configuracoes.json", "w") as file:
+        with open("configs/configuracoes.json", "w", encoding='utf-8') as file:
             dump(configs, file, indent=4)
         print("Configurações obtidas e salvas localmente.")
 
@@ -76,8 +76,8 @@ transacoes: list[dict] = requests.get(f"{PEER}/get_transacoes").json()
 ledger: list[dict] = requests.get(f"{PEER}/get_ledger").json()
 ultimo_bloco: dict = ledger[-1]
 
-check_ledger_exists()
-check_configs()
+check_ledger_exists(ledger)
+check_configs(configs)
 
 if not transacoes[0].get("code", None) is None:
     print("Não há transações para minerar")
