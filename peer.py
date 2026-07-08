@@ -4,6 +4,7 @@ from platform import node
 from socket import gethostbyname, gethostname
 from datetime import datetime
 from json import load, dump
+from glob import glob
 
 def check_ledger_exists():
     try:
@@ -18,7 +19,6 @@ def check_ledger_exists():
     
 def check_configs():
     try:
-        from glob import glob
         arquivos_configs = glob("configs/configuracoes*.json")
         if not arquivos_configs:
             raise FileNotFoundError("Nenhum arquivo de configuração encontrado.")
