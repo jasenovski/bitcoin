@@ -117,8 +117,8 @@ def escrever_bloco(bloco: dict, ledger: list[dict]) -> None:
 
     ledger.append(bloco)
 
-    with open("ledger/ledger.json", "w") as file:
-        jdump(ledger, file, indent=4)
+    with open("ledger/ledger.json", "w", encoding="utf-8") as file:
+        jdump(ledger, file, indent=4, ensure_ascii=False)
     
     return ledger
 
@@ -156,7 +156,7 @@ def adicionar_transacao(transacao: dict) -> None:
 
     transacoes.append(transacao)
 
-    with open('transacoes.pkl', 'wb') as f:
+    with open('transacoes.pkl', 'wb', encoding="utf-8") as f:
         pdump(transacoes, f)
 
 def fechar_transacoes(transacoes: list[dict]) -> None:
@@ -169,11 +169,11 @@ def fechar_transacoes(transacoes: list[dict]) -> None:
 
     date_hour = datetime.now().strftime("%d-%m-%Y %H%M%S")
 
-    with open(path.join("transacoes_minerar", f"transacoes_{date_hour}.json"), 'w') as file:
-        jdump(transacoes, file, indent=4)
+    with open(path.join("transacoes_minerar", f"transacoes_{date_hour}.json"), 'w', encoding="utf-8") as file:
+        jdump(transacoes, file, indent=4, ensure_ascii=False)
 
     
-    with open('transacoes.pkl', 'wb') as f:
+    with open('transacoes.pkl', 'wb', encoding="utf-8") as f:
         pdump([], f)
 
 def checar_maior_ledger():

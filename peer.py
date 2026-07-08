@@ -14,7 +14,7 @@ def check_ledger_exists(ledger: list[dict]):
     except FileNotFoundError:
         print("Ledger não encontrado...")
         with open("ledger/ledger.json", "w", encoding='utf-8') as file:
-            dump(ledger, file, indent=4)
+            dump(ledger, file, indent=4, ensure_ascii=False)
         print("Ledger obtido e salvo localmente.")
     
 def check_configs(configs: dict):
@@ -42,7 +42,7 @@ def check_configs(configs: dict):
             os.system("git pull")
 
             with open("configs/configuracoes.json", "w", encoding='utf-8') as file:
-                dump(configs, file, indent=4)
+                dump(configs, file, indent=4, ensure_ascii=False)
             
             print("Versão atualizada. Por favor, reinicie o minerador para continuar.")
             exit()
@@ -50,7 +50,7 @@ def check_configs(configs: dict):
     except FileNotFoundError:
         print("Configurações não encontradas...")
         with open("configs/configuracoes.json", "w", encoding='utf-8') as file:
-            dump(configs, file, indent=4)
+            dump(configs, file, indent=4, ensure_ascii=False)
         print("Configurações obtidas e salvas localmente.")
 
 start_time = datetime.now()
