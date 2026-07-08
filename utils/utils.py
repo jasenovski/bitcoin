@@ -1,5 +1,5 @@
 from utils.merkle import gerar_raiz_merkle
-from models.sha_bitcoin import sha_256_btc
+import requests
 from glob import glob
 from json import load as jload, dump as jdump
 from shutil import move
@@ -93,16 +93,17 @@ def checagem(bloco: dict) -> bool:
 
     Args:
         bloco (dict): Dicionário contendo as informações do bloco.
-
     Returns:
         bool: True se o bloco for válido, False caso contrário.
     """
 
     checagem_merkle = checar_hash_merkle(bloco["transacoes"], bloco["hash_raiz_merkle"])
-    checagem_hash = checar_hash_final(bloco["versao"], bloco["hash_bloco_anterior"], bloco["hash_raiz_merkle"], bloco["timestamp"], bloco["target"], bloco["nonce"], bloco["hash_final"])
+    checagem_hash = checar_hash_final(bloco["versao"], bloco["hash_bloco_anterior"], 
+                                      bloco["hash_raiz_merkle"], bloco["timestamp"], 
+                                      bloco["target"], bloco["nonce"], bloco["hash_final"])
     checagem_transacoes = checar_transacoes(bloco["transacoes"])
 
-    return checagem_hash and checagem_merkle and checagem_transacoes
+    return checagem_hash, checagem_merkle, checagem_transacoes
 
 def escrever_bloco(bloco: dict, ledger: list[dict]) -> None:
 
@@ -174,3 +175,58 @@ def fechar_transacoes(transacoes: list[dict]) -> None:
     
     with open('transacoes.pkl', 'wb') as f:
         pdump([], f)
+
+def checar_maior_ledger():
+    """
+    Função que checa qual é o maior ledger entre os peers, e salva a maior ledger no 
+    arquivo ledger.json.
+    """
+
+    todas_configs = []
+    for caminho_configs in glob("configs/configuracoes*.json"):
+        with open(caminho_configs, "r", encoding="utf-8") as arquivo:
+            configs = jload(arquivo)[0]
+        
+        todas_configs.append(configs)
+
+    todas_ledgers = {}
+    for caminho_ledger in glob("ledgers/ledger*.json"):
+        with open(caminho_ledger, "r", encoding="utf-8") as arquivo:
+            ledger = jload(arquivo)
+        
+        peer = caminho_ledger.split("\\")[-1].split(".")[0].split("_")[-1]
+        todas_ledgers[peer] = ledger
+
+    maiores_ledgers = {}
+    for peer, ledger in todas_ledgers.items():
+        tamanho = 1
+        for bloco in ledger[1:]:
+            response = requests.put(f"http://localhost:5000/check_mining", json=bloco)
+            if response.json()["code"] == 400 and \
+                response.json()["checagem_hash"] == False and \
+                    response.json()["checagem_merkle"] == False:
+                break
+            else:
+                versao: int = bloco["versao"]
+                hash_final: str = bloco["hash_final"]
+                ganho = bloco["transacoes"][-3]["valor"]
+
+                configs = [config for config in todas_configs if config["versao"] == versao][0]
+                dificuldade = configs["dificuldade"]
+                target = configs["target"]
+                recompensa = configs["recompensa"]
+
+                if hash_final.startswith("0" * dificuldade) and \
+                    int(hash_final[48:56], 16) <= target and \
+                        ganho == recompensa:
+                    tamanho += 1
+        
+        maiores_ledgers[peer] = tamanho
+
+    peer_vencedor = max(maiores_ledgers, key=maiores_ledgers.get)
+    ledger_vencedor = todas_ledgers[peer_vencedor]
+
+    with open(f"ledger/ledger.json", "w", encoding="utf-8") as arquivo:
+        jdump(ledger_vencedor, arquivo, indent=4, ensure_ascii=False)
+    
+    return peer_vencedor
