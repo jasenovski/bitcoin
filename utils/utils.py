@@ -156,7 +156,7 @@ def adicionar_transacao(transacao: dict) -> None:
 
     transacoes.append(transacao)
 
-    with open('transacoes.pkl', 'wb', encoding="utf-8") as f:
+    with open('transacoes.pkl', 'wb') as f:
         pdump(transacoes, f)
 
 def fechar_transacoes(transacoes: list[dict]) -> None:
@@ -173,7 +173,7 @@ def fechar_transacoes(transacoes: list[dict]) -> None:
         jdump(transacoes, file, indent=4, ensure_ascii=False)
 
     
-    with open('transacoes.pkl', 'wb', encoding="utf-8") as f:
+    with open('transacoes.pkl', 'wb') as f:
         pdump([], f)
 
 def checar_maior_ledger():
