@@ -31,14 +31,14 @@ def check_configs(configs: dict):
 
         ultimo_arquivo = max(arquivos_configs, key=versao_do_arquivo)
         with open(ultimo_arquivo, encoding="utf-8") as json_file:
-            configs_local = load(json_file)
+            configs_local = load(json_file)[0] if isinstance(load(json_file), list) else load(json_file)
 
         print("Configurações locais encontradas.")
 
-        if configs_local[0]["versao"] != configs["versao"]:
+        if configs_local["versao"] != configs["versao"]:
             import os
             print(f"Executando 'git pull' para atualizar a versão local do peer. "
-                  f"Versão do peer: {configs['versao']} | Versão local: {configs_local[0]['versao']}")
+                  f"Versão do peer: {configs['versao']} | Versão local: {configs_local['versao']}")
             os.system("git pull")
 
             with open("configs/configuracoes.json", "w", encoding='utf-8') as file:
