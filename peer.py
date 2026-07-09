@@ -31,7 +31,9 @@ def check_configs(configs: dict):
 
         ultimo_arquivo = max(arquivos_configs, key=versao_do_arquivo)
         with open(ultimo_arquivo, encoding="utf-8") as json_file:
-            configs_local = load(json_file)[0] if isinstance(load(json_file), list) else load(json_file)
+            configs_local = load(json_file)
+            print(configs_local)
+            configs_local = configs_local[0] if isinstance(configs_local, list) else configs_local
 
         print("Configurações locais encontradas.")
 
